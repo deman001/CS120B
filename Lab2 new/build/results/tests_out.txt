@@ -1,7 +1,4 @@
-Breakpoint 1 at 0x14a: file source/main.c, line 27.
+Breakpoint 1 at 0x13a: file source/main.c, line 24.
 Note: automatically using hardware breakpoints for read-only addresses.
-======================================================
-Running all tests..."
-
-"PINA = 0x0F (NO AVAILABLE SPACES) => PC7 = 1"..."PINA = 0x01 (THREE AVAILABLE SPACES) => PC = 3"..."PINA = 0x03 (TWO AVAILABLE SPACES) => PC = 2"..."PINA = 0x07 (ONE AVAILABLE SPACE) => PC = 1"...======================================================
+"PINA = 0x0F (GARAGE OPENED AT DAY) => PB = 0"..."PINA = 0x01 (GARAGE OPEN AT NIGHT) => PB = 1"..."PINA = 0x10 (GARAGE CLOSED IN DAY) => PB = 0"..."PINA = 0x00 (GARAGE CLOSED AT NIGHT) => PB = 0"...======================================================
 Quitting: Remote doesn't know how to detach
