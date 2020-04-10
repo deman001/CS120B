@@ -1,0 +1,7 @@
+Breakpoint 1 at 0x14a: file source/main.c, line 27.
+Note: automatically using hardware breakpoints for read-only addresses.
+======================================================
+Running all tests..."
+
+"PINA = 0x0F (NO AVAILABLE SPACES) => PC = 0"..."PINA = 0x01 (THREE AVAILABLE SPACES) => PC = 3"..."PINA = 0x03 (TWO AVAILABLE SPACES) => PC = 2"..."PINA = 0x07 (ONE AVAILABLE SPACE) => PC = 1"...======================================================
+Quitting: Remote doesn't know how to detach
