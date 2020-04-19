@@ -1,92 +1,75 @@
-/*	Author: deman001
- *  Partner(s) Name: 
- *	Lab Section:
- *	Assignment: Lab #  Exercise #
- *	Exercise Description: [optional - include for your own benefit]
- *
- *	I acknowledge all content contained herein, excluding template or example
- *	code, is my own original work.
- */
-#include <avr/io.h>
-#ifdef _SIMULATE_
-#include "simAVRHeader.h"
-#endif
+# Test file for "Lab4"
 
-enum States{Start, wait, num, num_r, unlocked, lock} state;
 
-void Tick() {
-	switch(state) {
-		case(Start):
-			state = wait;
-			break;
-		case(wait):
-			state = wait;
-			if (PINA == 0x04) {
-				state = num;
-			}
-			break;
-		case(num):
-			state = wait;
-			if (PINA == 0x04) {
-				state = num;
-			}
-			if (PINA == 0x00) {
-				state = num_r;
-			}
-			break;
-		case(num_r):
-			state = wait;
-			if (PINA == 0x00) {
-				state = num_r;
-			}
-			if (PINA == 0x02) {
-				state = unlocked;
-			}
-			break;
-		case(unlocked):
-			state = unlocked;
-			if (PINA = 0x80) {
-				state = lock;
-			}
-			break;
-		case(lock):
-			state = lock;
-			if (PINA = 0x00) {
-				state = wait;
-			}
-			break;
-		default:
-			state = Start;
-			break;
-	}
-	switch(state) {
-		case(wait):
-			PORTB = 0x00;
-			break;
-		case(num):
-			PORTB = 0x00;
-			break;
-		case(num_r):
-			PORTB = 0x00;
-			break;
-		case(unlocked):
-			PORTB = 0x01;
-			break;
-		case(lock):
-			PORTB = 0x00;
-		default:
-			break;
-	}
-}
-int main(void) {
-    /* Insert DDR and PORT initializations */
-	DDRA = 0x00;	PORTA = 0xFF;
-	DDRB = 0xFF;	PORTB = 0x00;
-    /* Insert your solution below */
-	PORTB = 0x00;
-	state = Start;
-    while (1) {
-	Tick();
-    }
-    return 1;
-}
+# commands.gdb provides the following functions for ease:
+#   test "<message>"
+#       Where <message> is the message to print. Must call this at the beginning of every test
+#       Example: test "PINA: 0x00 => expect PORTC: 0x01"
+#   checkResult
+#       Verify if the test passed or failed. Prints "passed." or "failed." accordingly, 
+#       Must call this at the end of every test.
+#   expectPORTx <val>
+#       With x as the port (A,B,C,D)
+#       The value the port is epected to have. If not it will print the erroneous actual value
+#   setPINx <val>
+#       With x as the port or pin (A,B,C,D)
+#       The value to set the pin to (can be decimal or hexidecimal
+#       Example: setPINA 0x01
+#   printPORTx f OR printPINx f 
+#       With x as the port or pin (A,B,C,D)
+#       With f as a format option which can be: [d] decimal, [x] hexadecmial (default), [t] binary 
+#       Example: printPORTC d
+#   printDDRx
+#       With x as the DDR (A,B,C,D)
+#       Example: printDDRB
+
+echo ======================================================\n
+echo Running all tests..."\n\n
+
+# Example test:
+test "ONLY #"
+# Set inputs
+setPINA 0x00
+set state = Start
+# Continue for several ticks
+continue 2
+setPINA 0x04
+continue 2
+# Set expect values
+expectPORTB 0x00
+expect state num
+# Check pass/fail
+checkResult
+
+test "PRESS AND RELEASE #"
+setPINA 0x00
+set state = Start
+continue 2
+setPINA 0x04
+continue 2
+setPINA 0x00
+continue 2
+expectPORTB 0x00
+expect state num_r
+checkResult
+
+test "UNLOCK"
+setPINA 0x00
+set state = Start
+continue 2
+setPINA 0x04
+continue 2
+setPINA 0x00
+continue 2
+setPINA 0x02
+continue 2
+expectPORTB 0x01
+expect state unlocked
+checkResult
+
+# Add tests below
+
+# Report on how many tests passed/tests ran
+set $passed=$tests-$failed
+eval "shell echo Passed %d/%d tests.\n",$passed,$tests
+echo ======================================================\n
