@@ -1,10 +1,8 @@
-Breakpoint 1 at 0x3ca: file source/main.c, line 115.
+Breakpoint 1 at 0x302: file source/main.c, line 88.
 Note: automatically using hardware breakpoints for read-only addresses.
 ======================================================
 Running all tests..."
 
-"INCREMENT ONCE"..."DECREMENT ONCE"...
-	Expected 0x06 
-	PORTC '0x800028:	0x07
-======================================================
+"ONLY #"..."PRESS AND RELEASE #"..."UNLOCK"...
+	Expected num_r but got state:5======================================================
 Quitting: Remote doesn't know how to detach

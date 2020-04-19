@@ -27,28 +27,46 @@ echo ======================================================\n
 echo Running all tests..."\n\n
 
 # Example test:
-test "INCREMENT ONCE"
+test "ONLY #"
 # Set inputs
 setPINA 0x00
 set state = Start
 # Continue for several ticks
 continue 2
-setPINA 0x01
+setPINA 0x04
 continue 2
 # Set expect values
-expectPORTC 0x08
-expect state inc
+expectPORTB 0x00
+expect state num
 # Check pass/fail
 checkResult
 
-test "DECREMENT ONCE"
+test "PRESS AND RELEASE #"
 setPINA 0x00
 set state = Start
 continue 2
+setPINA 0x04
+continue 2
+setPINA 0x00
+continue 2
+expectPORTB 0x00
+expect state num_r
+checkResult
+
+test "UNLOCK"
+setPINA 0x00
+set state = Start
+continue 2
+setPINA 0x04
+continue 2
+setPINA 0x00
+continue 2
 setPINA 0x02
 continue 2
-expectPORTC 0x06
-expect state dec
+setPINA 0x00
+continue 2
+expectPORTB 0x00
+expect state num_r
 checkResult
 
 # Add tests below
