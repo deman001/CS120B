@@ -45,13 +45,13 @@ void Tick() {
 			break;
 		case(unlocked):
 			state = unlocked;
-			if (PINA = 0x80) {
+			if (PINA == 0x80) {
 				state = lock;
 			}
 			break;
 		case(lock):
 			state = lock;
-			if (PINA = 0x00) {
+			if (PINA == 0x00) {
 				state = wait;
 			}
 			break;

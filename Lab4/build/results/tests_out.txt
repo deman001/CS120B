@@ -1,8 +1,7 @@
-Breakpoint 1 at 0x302: file source/main.c, line 88.
+Breakpoint 1 at 0x318: file source/main.c, line 88.
 Note: automatically using hardware breakpoints for read-only addresses.
 ======================================================
 Running all tests..."
 
-"ONLY #"..."PRESS AND RELEASE #"..."UNLOCK"...
-	Expected num_r but got state:5======================================================
+"ONLY #"..."PRESS AND RELEASE #"..."UNLOCK"...======================================================
 Quitting: Remote doesn't know how to detach
