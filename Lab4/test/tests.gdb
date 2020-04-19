@@ -27,7 +27,7 @@ echo ======================================================\n
 echo Running all tests..."\n\n
 
 # Example test:
-test "STOPS AT ON PRESS WHERE B1 IS ON, B0 IS OFF"
+test "INCREMENT ONCE"
 # Set inputs
 setPINA 0x00
 set state = Start
@@ -36,23 +36,19 @@ continue 2
 setPINA 0x01
 continue 2
 # Set expect values
-expectPORTB 0x02
-expect state ON_P
+expectPORTC 0x08
+expect state inc
 # Check pass/fail
 checkResult
 
-test "STOPS AT OFF PRESS WHERE B0 IS ON, B1 IS OFF"
+test "DECREMENT ONCE"
 setPINA 0x00
 set state = Start
 continue 2
-setPINA 0x01
+setPINA 0x02
 continue 2
-setPINA 0x00
-continue 2
-setPINA 0x01
-continue 2
-expectPORTB 0x01
-expect state OFF_P
+expectPORTC 0x06
+expect state dec
 checkResult
 
 # Add tests below

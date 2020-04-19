@@ -14,7 +14,7 @@
 
 enum States{Start, wait, inc, dec, reset} state;
 
-void Tick(unsigned char temp) {
+void Tick() {
 	switch(state) {
 		case(Start):
 			state = wait;
@@ -23,15 +23,15 @@ void Tick(unsigned char temp) {
 			if (PINA == 0x00) {
 				state = wait;
 			}
-			else if (PINA == 0x01) {
-				if (temp < 0x09) {
-					temp++;
+			if (PINA == 0x01) {
+				if (PORTC < 0x09) {
+					PORTC++;
 				}
 				state = inc;
 			}
 			else if (PINA == 0x02) {
-				if (temp > 0x00) {
-					temp--;
+				if (PORTC > 0x00) {
+					PORTC = PORTC - 1;
 				}
 				state = dec;
 			}
@@ -47,8 +47,8 @@ void Tick(unsigned char temp) {
 				state = inc;
 			}
 			else if (PINA == 0x02) {
-				if (temp > 0x00) {
-					temp--;
+				if (PORTC > 0x00) {
+					PORTC = PORTC - 1;
 				}
 				state = dec;
 			}
@@ -61,8 +61,8 @@ void Tick(unsigned char temp) {
 				state = wait;
 			}
 			else if (PINA == 0x01) {
-				if (temp < 0x09) {
-					temp++;
+				if (PORTC < 0x09) {
+					PORTC++;
 				}
 				state = inc;
 			}
@@ -78,14 +78,14 @@ void Tick(unsigned char temp) {
 				state = wait;
 			}
 			else if (PINA == 0x01) {
-				if (temp < 0x09) {
-					temp++;
+				if (PORTC < 0x09) {
+					PORTC++;
 				}
 				state = inc;
 			}
 			else if (PINA == 0x02) {
-				if (temp > 0x00) {
-					temp--;
+				if (PORTC > 0x00) {
+					PORTC--;
 				}
 				state = dec;
 			}
@@ -99,11 +99,10 @@ void Tick(unsigned char temp) {
 	}
 	switch(state) {
 		case(reset):
-			temp = 0x00;
+			PORTC = 0x00;
 		default:
 			break;
 	}
-	PORTC = temp;
 }
 int main(void) {
     /* Insert DDR and PORT initializations */
@@ -113,7 +112,7 @@ int main(void) {
 	PORTC = 0x07;
 	state = Start;
     while (1) {
-	Tick(PORTC);
+	Tick();
     }
     return 1;
 }
