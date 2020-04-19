@@ -63,8 +63,6 @@ setPINA 0x00
 continue 2
 setPINA 0x02
 continue 2
-setPINA 0x00
-continue 2
 expectPORTB 0x01
 expect state unlocked
 checkResult
