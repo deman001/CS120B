@@ -111,6 +111,7 @@ int main(void) {
 	DDRC = 0xFF;	PORTC = 0x00;
     /* Insert your solution below */
 	PORTC = 0x07;
+	PINA = ~PINA;
 	state = Start;
     while (1) {
 	Tick(PORTC);
