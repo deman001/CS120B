@@ -13,6 +13,7 @@
 #endif
 
 enum States{Start, wait, inc, dec, reset} state;
+unsigned char tmp;
 
 void Tick(unsigned char temp) {
 	switch(state) {
@@ -20,76 +21,76 @@ void Tick(unsigned char temp) {
 			state = wait;
 			break;
 		case(wait):
-			if (PINA == 0x00) {
+			if (tmp == 0x00) {
 				state = wait;
 			}
-			else if (PINA == 0x01) {
+			else if (tmp == 0x01) {
 				if (temp < 0x09) {
 					temp++;
 				}
 				state = inc;
 			}
-			else if (PINA == 0x02) {
+			else if (tmp == 0x02) {
 				if (temp > 0x00) {
 					temp--;
 				}
 				state = dec;
 			}
-			else if (PINA == 0x03) {
+			else if (tmp == 0x03) {
 				state = reset;
 			}
 			break;
 		case(inc):
-			if (PINA == 0x00) {
+			if (tmp == 0x00) {
 				state = wait;
 			}
-			if (PINA == 0x01) {
+			if (tmp == 0x01) {
 				state = inc;
 			}
-			else if (PINA == 0x02) {
+			else if (tmp == 0x02) {
 				if (temp > 0x00) {
 					temp--;
 				}
 				state = dec;
 			}
-			else if (PINA == 0x03) {
+			else if (tmp == 0x03) {
 				state = reset;
 			}
 			break;
 		case(dec):
-			if (PINA == 0x00) {
+			if (tmp == 0x00) {
 				state = wait;
 			}
-			else if (PINA == 0x01) {
+			else if (tmp == 0x01) {
 				if (temp < 0x09) {
 					temp++;
 				}
 				state = inc;
 			}
-			else if (PINA == 0x02) {
+			else if (tmp == 0x02) {
 				state = dec;
 			}
-			else if (PINA == 0x03) {
+			else if (tmp == 0x03) {
 				state = reset;
 			}
 			break;
 		case(reset):
-			if (PINA == 0x00) {
+			if (tmp == 0x00) {
 				state = wait;
 			}
-			else if (PINA == 0x01) {
+			else if (tmp == 0x01) {
 				if (temp < 0x09) {
 					temp++;
 				}
 				state = inc;
 			}
-			else if (PINA == 0x02) {
+			else if (tmp == 0x02) {
 				if (temp > 0x00) {
 					temp--;
 				}
 				state = dec;
 			}
-			else if (PINA == 0x03) {
+			else if (tmp == 0x03) {
 				state = reset;
 			}
 			break;
@@ -111,8 +112,8 @@ int main(void) {
 	DDRC = 0xFF;	PORTC = 0x00;
     /* Insert your solution below */
 	PORTC = 0x00;
-	PINA = ~PINA;
 	state = Start;
+	tmp = ~PINA;
     while (1) {
 	Tick(PORTC);
     }
