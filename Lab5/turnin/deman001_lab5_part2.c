@@ -16,6 +16,7 @@ enum States{Start, wait, inc, dec, reset} state;
 unsigned char tmp;
 
 void Tick(unsigned char temp) {
+	tmp = ~PINA;
 	switch(state) {
 		case(Start):
 			state = wait;
@@ -113,7 +114,6 @@ int main(void) {
     /* Insert your solution below */
 	PORTC = 0x00;
 	state = Start;
-	tmp = ~PINA;
     while (1) {
 	Tick(PORTC);
     }
