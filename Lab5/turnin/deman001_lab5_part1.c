@@ -20,7 +20,7 @@ int main(void) {
 	unsigned char tmp, fuel;
     while (1) {
 	fuel = 0x40;
-	tmp = PINA & 0x0F;
+	tmp = ~PINA;
 	if (tmp >= 0x01) {
 		fuel = fuel | 0x20;
 	}
