@@ -30,9 +30,9 @@ echo Running all tests..."\n\n
 test "PINA: 0x00, PINB: 0x00 => PORTC: 0"
 # Set inputs
 # Continue for several ticks
-continue 3
+continue 0
 # Set expect values
-expectPORTB 0x04
+expectPORTB 0x01
 # Check pass/fail
 checkResult
 

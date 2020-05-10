@@ -86,6 +86,7 @@ int main(void) {
     /* Insert your solution below */
 	TimerSet(1000);
 	TimerOn();
+	state = firstLed;
     while (1) {
 	Tick();
 	while (!TimerFlag);
