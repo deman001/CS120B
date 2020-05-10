@@ -13,7 +13,7 @@
 #include "simAVRHeader.h"
 #endif
 
-enum States{firstLed, secondLed, thirdLed} state;
+enum States{Start, firstLed, secondLed, thirdLed} state;
 volatile unsigned char TimerFlag = 0;
 unsigned long _avr_timer_M = 1;
 unsigned long _avr_timer_cntcurr = 0;
@@ -50,6 +50,9 @@ void TimerSet(unsigned long M) {
 
 void Tick() {
 	switch(state) {
+		case(Start):
+			state = firstLed;
+			break;
 		case(firstLed):
 			state = secondLed;
 			break;
@@ -86,7 +89,7 @@ int main(void) {
     /* Insert your solution below */
 	TimerSet(1000);
 	TimerOn();
-	state = firstLed;
+	state = Start;
     while (1) {
 	Tick();
 	while (!TimerFlag);
