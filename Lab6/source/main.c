@@ -13,7 +13,8 @@
 #include "simAVRHeader.h"
 #endif
 
-enum States{firstLed, secondLed, thirdLed} state;
+enum States{Start, gameRun, stopPress, wait,startGame} state;
+enum Light{firstLed, secondLed, thirdLed, fourthLed} lights;
 volatile unsigned char TimerFlag = 0;
 unsigned long _avr_timer_M = 1;
 unsigned long _avr_timer_cntcurr = 0;
@@ -49,34 +50,72 @@ void TimerSet(unsigned long M) {
 }
 
 void Tick() {
+	switch(lights) {
+                case(firstLed):
+                        PORTB = 0x01;
+                        break;
+                case(secondLed):
+                        PORTB = 0x02;
+                        break;
+                case(thirdLed):
+                        PORTB = 0x04;
+                        break;
+                case(fourthLed):
+                        PORTB = 0x02;
+                default:
+                        break;
+        }
+        switch(lights) {
+                case(firstLed):
+                        lights = secondLed;
+                        break;
+                case(secondLed):
+                        lights = thirdLed;
+                        break;
+                case(thirdLed):
+                        lights = fourthLed;
+                        break;
+                case(fourthLed):
+                default:
+                        lights = firstLed;
+                        break;
+        }
+}
+
+void Tick1() {
 	switch(state) {
-		case(firstLed):
-			state = secondLed;
+		case(Start):
+			state = gameRun;
 			break;
-		case(secondLed):
-			state = thirdLed;
+		case(gameRun):
+			state = PINA ? stopPress: gameRun;
 			break;
-		case(thirdLed):
-			state = firstLed;
+		case(stopPress):
+			state = PINA ? stopPress: wait;
+			break;
+		case(wait):
+			state = PINA ? startGame: wait;
+			break;
+		case(startGame):
+			if (!PINA) {
+				lights = firstLed;
+				state = gameRun;
+			}
+			else { state = startGame;}
 			break;
 		default:
-			state = firstLed;
+			state = Start;
 			break;
 	}
 	switch(state) {
-		case(firstLed):
-			PORTB = 0x01;
-			break;
-		case(secondLed):
-			PORTB = 0x02;
-			break;
-		case(thirdLed):
-			PORTB = 0x04;
+		case(gameRun):
+			Tick();
+			while(!TimerFlag);
+			TimerFlag = 0;
 			break;
 		default:
 			break;
 	}
-			
 }
 
 int main(void) {
@@ -84,13 +123,12 @@ int main(void) {
 	DDRB = 0xFF;
 	PORTB = 0x00;
     /* Insert your solution below */
-	TimerSet(1000);
+	TimerSet(300);
 	TimerOn();
-	state = firstLed;
+	state = Start;
+	lights = firstLed;
     while (1) {
-	Tick();
-	while (!TimerFlag);
-	TimerFlag = 0;
+	Tick1();
     }
     return 1;
 }
