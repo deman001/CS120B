@@ -13,7 +13,12 @@
 #include "simAVRHeader.h"
 #endif
 
-enum States{Start, firstLed, secondLed, thirdLed} state;
+enum 
+enum ThreeLEDsSM{Start, firstLed, secondLed, thirdLed} state;
+enum BlinkingLEDSM{Begin, bitThreeup, bitThreedown} lights;
+enum CombineLEDsSM{First, Keep} cycle;
+volatile unsigned char threeLEDs = 0x00;
+volatile unsigned char blinkingLED = 0x00;
 volatile unsigned char TimerFlag = 0;
 unsigned long _avr_timer_M = 1;
 unsigned long _avr_timer_cntcurr = 0;
