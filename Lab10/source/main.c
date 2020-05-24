@@ -13,7 +13,7 @@
 #include "simAVRHeader.h"
 #endif
 
-enum 
+
 enum ThreeLEDsSM{Start, firstLed, secondLed, thirdLed} state;
 enum BlinkingLEDSM{Begin, bitThreeup, bitThreedown} lights;
 enum CombineLEDsSM{First, Keep} cycle;
@@ -22,6 +22,41 @@ volatile unsigned char blinkingLED = 0x00;
 volatile unsigned char TimerFlag = 0;
 unsigned long _avr_timer_M = 1;
 unsigned long _avr_timer_cntcurr = 0;
+unsigned char i;
+
+void Tick() {
+	//State actions for bits 0, 1, 2
+	switch(state) {
+		case(firstLed): //bit 0 = 1
+			threeLEDs = 0x01;
+			break;
+		case(secondLed): //bit 1 = 1
+			threeLEDs = 0x02;
+			break;
+		case(thirdLed): //bit 2 = 1
+			threeLEDs = 0x04;
+			break;
+		default:
+			break;
+	}
+
+	//State actions for bit 3
+	switch(lights) {
+		case(bitThreeup): //turning bit 3 on
+			blinkingLED = 0x08;
+			break;
+		case(bitThreedown): //turning bit 3 off
+			blinkingLED = 0x00;
+			break;
+	}
+
+	//State transitions
+	switch(state) {
+		case(Start):
+			state = firstLed;
+			break;
+		case(firstLed):
+	}			
 
 void TimerOn() {
 	TCCR1B = 0x0B;
@@ -55,10 +90,26 @@ void TimerSet(unsigned long M) {
 
 int main(void) {
     /* Insert DDR and PORT initializations */
-
+	DDRB = 0xFF; PORTB = 0x00;
     /* Insert your solution below */
+	TimerSet(100);
+	TimerOn();
+	state = Start;
+	lights = Begin;
+	cycle = First;
+	i = 0;
     while (1) {
+	if(i % 10 == 0) {
+		//FIRST SM
+		Tick();
 
+		//SECOND SM
+		Tick1();
+
+		//THIRD SM
+		Tick2();
+	}
+	i++;
     }
     return 1;
 }
