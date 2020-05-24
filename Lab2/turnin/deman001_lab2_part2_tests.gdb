@@ -1,4 +1,4 @@
-# Test file for "Lab2"
+# Test file for "Lab2 new"
 
 
 # commands.gdb provides the following functions for ease:
@@ -31,31 +31,30 @@ test "PINA = 0x0F (NO AVAILABLE SPACES) => PC = 0"
 # Set inputs
 setPINA 0x0F
 # Continue for several ticks
-continue 10
+continue 2
 # Set expect values
 expectPORTC 0x00
 # Check pass/fail
 checkResult
-
+#
 test "PINA = 0x01 (THREE AVAILABLE SPACES) => PC = 3"
 setPINA 0x01
 continue 2
-expectPORTB 0x03
+expectPORTC 0x03
 checkResult
-# Add tests below
-
+# # Add tests below
+#
 test "PINA = 0x03 (TWO AVAILABLE SPACES) => PC = 2"
 setPINA 0x03
 continue 2
-expectPORTB 0x02
+expectPORTC 0x02
 checkResult
-
+#
 test "PINA = 0x07 (ONE AVAILABLE SPACE) => PC = 1"
 setPINA 0x07
 continue 2
 expectPORTC 0x01
 checkResult
-
 
 # Report on how many tests passed/tests ran
 set $passed=$tests-$failed

@@ -1,6 +1,6 @@
 # Test file for "Lab2"
-
-
+#
+#
 # commands.gdb provides the following functions for ease:
 #   test "<message>"
 #       Where <message> is the message to print. Must call this at the beginning of every test
@@ -22,41 +22,50 @@
 #   printDDRx
 #       With x as the DDR (A,B,C,D)
 #       Example: printDDRB
-
-echo ======================================================\n
-echo Running all tests..."\n\n
-
+#
+# echo ======================================================\n
+# echo Running all tests..."\n\n
+#
 # Example test:
-test "PINA = 0x0F (NO AVAILABLE SPACES) => PC = 0"
+test "ONLY PORTB = 0xF0 (PC0 should be 1, PC1 should be 0) => PC = 0xF1"
 # Set inputs
-setPINA 0x0F
+ setPINA 0x00
+ setPINB 0xF0
+ setPINC 0x00
 # Continue for several ticks
-continue 10
+continue 2
 # Set expect values
-expectPORTC 0x80
+expectPORTD 0xF1
 # Check pass/fail
 checkResult
-
-test "PINA = 0x01 (THREE AVAILABLE SPACES) => PC = 3"
-setPINA 0x01
+#
+#
+test "CHECKING THE BALANCE SENSOR ONLY AND THE TOTAL WEIGHT SENSORS"
+setPINA 0x80
+setPINB 0x00
+setPINC 0x00
 continue 2
-expectPORTB 0x03
+expectPORTD 0x82
 checkResult
 # Add tests below
-
-test "PINA = 0x03 (TWO AVAILABLE SPACES) => PC = 2"
-setPINA 0x03
+#
+test "CHECKING BOTH SENSORS AS WELL AS THE TOTAL WEIGHT"
+setPINA 0x51
+setPINB 0x80
+setPINC 0x00
 continue 2
-expectPORTB 0x02
+expectPORTD 0xD3
 checkResult
-
-test "PINA = 0x07 (ONE AVAILABLE SPACE) => PC = 1"
-setPINA 0x07
+#
+test "CHECKING ZEROES"
+setPINA 0x00
+setPINB 0x00
+setPINC 0x00
 continue 2
-expectPORTC 0x01
+expectPORTD 0x00
 checkResult
-
-
+#
+#
 # Report on how many tests passed/tests ran
 set $passed=$tests-$failed
 eval "shell echo Passed %d/%d tests.\n",$passed,$tests

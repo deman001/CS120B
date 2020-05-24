@@ -1,6 +1,6 @@
-# Test file for "Lab2"
-#
-#
+# Test file for "LabTemplate"
+
+
 # commands.gdb provides the following functions for ease:
 #   test "<message>"
 #       Where <message> is the message to print. Must call this at the beginning of every test
@@ -22,41 +22,24 @@
 #   printDDRx
 #       With x as the DDR (A,B,C,D)
 #       Example: printDDRB
-#
-# echo ======================================================\n
-# echo Running all tests..."\n\n
-#
+
+echo ======================================================\n
+echo Running all tests..."\n\n
+
 # Example test:
-test "PINA = 0x0F (GARAGE OPENED AT DAY) => PB = 0"
+test "PINA: 0x00, PINB: 0x00 => PORTC: 0"
 # Set inputs
- setPINA 0x0F
+setPINA 0x00
+setPINB 0x00
 # Continue for several ticks
 continue 2
 # Set expect values
-expectPORTB 0x00
+expectPORTC 0
 # Check pass/fail
 checkResult
-#
-test "PINA = 0x01 (GARAGE OPEN AT NIGHT) => PB = 1"
-setPINA 0x01
-continue 2
-expectPORTB 0x01
-checkResult
+
 # Add tests below
-#
-test "PINA = 0x10 (GARAGE CLOSED IN DAY) => PB = 0"
-setPINA 0x10
-continue 2
-expectPORTB 0x00
-checkResult
-#
-test "PINA = 0x00 (GARAGE CLOSED AT NIGHT) => PB = 0"
-setPINA 0x00
-continue 2
-expectPORTB 0x00
-checkResult
-#
-#
+
 # Report on how many tests passed/tests ran
 set $passed=$tests-$failed
 eval "shell echo Passed %d/%d tests.\n",$passed,$tests

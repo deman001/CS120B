@@ -1,7 +1,4 @@
-Breakpoint 1 at 0xf0: file source/main.c, line 27.
+Breakpoint 1 at 0x168: file source/main.c, line 29.
 Note: automatically using hardware breakpoints for read-only addresses.
-======================================================
-Running all tests..."
-
-"PINA = 0x0F (NO AVAILABLE SPACES) => PC = 0"...test/tests.gdb:34: Error in sourced command file:
-Remote connection closed
+"ONLY PORTB = 0xF0 (PC0 should be 1, PC1 should be 0) => PC = 0xF1"..."CHECKING THE BALANCE SENSOR ONLY AND THE TOTAL WEIGHT SENSORS"..."CHECKING BOTH SENSORS AS WELL AS THE TOTAL WEIGHT"..."CHECKING ZEROES"...======================================================
+Quitting: Remote doesn't know how to detach

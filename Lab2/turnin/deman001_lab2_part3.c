@@ -1,5 +1,5 @@
 /*	Author: deman001
- *  Partner(s) Name: 
+ *	Partner(s) Name: 
  *	Lab Section:
  *	Assignment: Lab #  Exercise #
  *	Exercise Description: [optional - include for your own benefit]
@@ -27,24 +27,24 @@ int main(void) {
     while (1) {
 	tempA = PINA;
 	tempA = tempA & 0x01;
-	cntavail = 0x04;
+	cntavail = 0x00;
 	if (tempA == 0x01) {
-		cntavail--;
+		cntavail++;
 	}
 	tempA = 0x02 & PINA;
 	if (tempA == 0x02) {
-		cntavail--;
+		cntavail++;
 	}
 	tempA = 0x04 & PINA;
 	if (tempA == 0x04) {
-		cntavail--;
+		cntavail++;
 	}
 	tempA = 0x08 & PINA;
 	if (tempA == 0x08) {
-		cntavail--;
+		cntavail++;
 	}
-	PORTC = cntavail;
-	if (PORTC == 0x0) {
+	PORTC = 0x04 - cntavail;
+	if (PORTC == 0x00) {
 		PORTC = PORTC | 0x80;
 	}
     }

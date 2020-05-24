@@ -14,15 +14,14 @@
 #endif
 
 
-enum ThreeLEDsSM{Start, firstLed, secondLed, thirdLed} state;
-enum BlinkingLEDSM{Begin, bitThreeup, bitThreedown} lights;
-enum CombineLEDsSM{First, Keep} cycle;
+enum ThreeLEDsSM{firstLed, secondLed, thirdLed} state;
+enum BlinkingLEDSM{bitThreeup, bitThreedown} lights;
+enum CombineLEDsSM{Keep} cycle;
 volatile unsigned char threeLEDs = 0x00;
 volatile unsigned char blinkingLED = 0x00;
 volatile unsigned char TimerFlag = 0;
 unsigned long _avr_timer_M = 1;
 unsigned long _avr_timer_cntcurr = 0;
-unsigned char i;
 
 void Tick() {
 	//State actions for bits 0, 1, 2
@@ -40,23 +39,62 @@ void Tick() {
 			break;
 	}
 
+	//State transitions
+	switch(state) {
+		case(firstLed):
+			state = secondLed;
+			break;
+		case(secondLed):
+			state = thirdLed;
+			break;
+		case(thirdLed):
+			state = firstLed;
+		default:
+			break;
+	}			
+}
+
+void Tick1() {
 	//State actions for bit 3
 	switch(lights) {
-		case(bitThreeup): //turning bit 3 on
-			blinkingLED = 0x08;
-			break;
-		case(bitThreedown): //turning bit 3 off
+		case(bitThreedown):
 			blinkingLED = 0x00;
+			break;
+		case(bitThreeup):
+			blinkingLED = 0x08;
+		default:
 			break;
 	}
 
-	//State transitions
-	switch(state) {
-		case(Start):
-			state = firstLed;
+	//State transitions for SM
+	switch(lights) {
+		case(bitThreedown):
+			lights = bitThreeup;
 			break;
-		case(firstLed):
-	}			
+		case(bitThreeup):
+		default:
+			lights = bitThreedown;
+			break;
+	}
+}
+
+void Tick2() {
+	//State SM action combines the other two shared variables
+	switch(cycle) {
+		case(Keep):
+			PORTB = threeLEDs + blinkingLED;
+		default:
+			break;
+	}
+	
+	//State SM Transitions
+	switch(cycle) {
+		case(Keep):
+			cycle = Keep;
+		default:
+			break;
+	}
+}
 
 void TimerOn() {
 	TCCR1B = 0x0B;
@@ -92,24 +130,24 @@ int main(void) {
     /* Insert DDR and PORT initializations */
 	DDRB = 0xFF; PORTB = 0x00;
     /* Insert your solution below */
-	TimerSet(100);
+	TimerSet(1000);
 	TimerOn();
-	state = Start;
-	lights = Begin;
-	cycle = First;
-	i = 0;
+	state = firstLed;
+	lights = bitThreedown;
+	cycle = Keep;
     while (1) {
-	if(i % 10 == 0) {
-		//FIRST SM
-		Tick();
+	//FIRST SM
+	Tick();
 
-		//SECOND SM
-		Tick1();
+	//SECOND SM
+	Tick1();
 
-		//THIRD SM
-		Tick2();
-	}
-	i++;
+	//THIRD SM
+	Tick2();
+
+	//Timer ticks every 1 second
+	while(!TimerFlag);
+	TimerFlag = 0;
     }
     return 1;
 }
