@@ -36,9 +36,24 @@ expectPORTB 0x01
 checkResult
 
 # Add tests below
-test "Testing one tick. PORTB = 0x0A"
-continue 1.5
-expectPORTB 0x0A
+test "Testing one tick. PORTB = 0x06"
+continue 3
+expectPORTB 0x02
+checkResult
+
+test "Testing 6. PORTB = 0x04"
+continue 6
+expectPORTB 0x04
+checkResult
+
+test "Testing 9. PORTB = 0x01"
+continue 9
+expectPORTB 0x01
+checkResult
+
+test "Testing 1 sec. PORTB = 0x09"
+continue 10
+expectPORTB 0x01
 checkResult
 
 # Report on how many tests passed/tests ran

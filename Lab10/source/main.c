@@ -22,6 +22,7 @@ volatile unsigned char blinkingLED = 0x00;
 volatile unsigned char TimerFlag = 0;
 unsigned long _avr_timer_M = 1;
 unsigned long _avr_timer_cntcurr = 0;
+unsigned int i;
 
 void Tick() {
 	//State actions for bits 0, 1, 2
@@ -130,17 +131,21 @@ int main(void) {
     /* Insert DDR and PORT initializations */
 	DDRB = 0xFF; PORTB = 0x00;
     /* Insert your solution below */
-	TimerSet(1000);
+	TimerSet(100);
 	TimerOn();
 	state = firstLed;
 	lights = bitThreedown;
 	cycle = Keep;
     while (1) {
 	//FIRST SM
-	Tick();
+	if (i % 3 == 0) {
+		Tick();
+	}
 
 	//SECOND SM
-	Tick1();
+	if (i % 10 == 0) {
+		Tick1();
+	}
 
 	//THIRD SM
 	Tick2();
@@ -148,6 +153,7 @@ int main(void) {
 	//Timer ticks every 1 second
 	while(!TimerFlag);
 	TimerFlag = 0;
+	i++;
     }
     return 1;
 }
